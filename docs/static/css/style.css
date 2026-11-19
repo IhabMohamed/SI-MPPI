@@ -1,0 +1,420 @@
+/* SI-MPPI project page. Colors are tokens; dark mode follows the OS unless data-theme is set. */
+:root {
+  --bg: #ffffff;
+  --band: #f6f4f1;
+  --card: #ffffff;
+  --ink: #1d1f23;
+  --muted: #5a606a;
+  --line: #e2ded8;
+  --accent: #990000;          /* Indiana University crimson */
+  --accent-hover: #7a0000;
+  --on-accent: #ffffff;
+  --tint: #f7eaea;
+  --best: #ece8e2;            /* "gray cell" of Table I */
+  --code-bg: #f0ede8;
+  --start: #008000;           /* start marker in the clips (matplotlib "green") */
+  --goal: #7b2cbf;            /* goal marker in the clips */
+  --success: #1a7f37;         /* frame of a clip that has reached the goal */
+  --success-tint: #e6f4ea;
+  --fail: #c62828;            /* frame of a clip that ends without reaching the goal */
+  --fail-tint: #fdecea;
+  --bar-fill: #9aa0a8;        /* tree-size bar of the baselines */
+  --footer-bg: #1d1f23;       /* dark footer (Contact / GitHub / Lab Website) */
+  --footer-ink: #e9e7e4;
+  --footer-muted: #a4a8b0;
+  --footer-accent: #e8726f;
+  --footer-accent-hover: #f09592;
+  --shadow: 0 1px 2px rgba(29, 31, 35, .06), 0 4px 14px rgba(29, 31, 35, .06);
+  --radius: 10px;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  /* Text font of the paper's tables (IEEEtran: Times); Tinos is the web fallback. */
+  --times: "Times New Roman", "Nimbus Roman", "Nimbus Roman No9 L", "TeX Gyre Termes", Tinos, Times, serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121316;
+    --band: #191a1e;
+    --card: #1f2024;
+    --ink: #e9e7e4;
+    --muted: #a4a8b0;
+    --line: #2f3137;
+    --accent: #e8726f;
+    --accent-hover: #f09592;
+    --on-accent: #1a0d0d;
+    --tint: #2c1c1d;
+    --best: #2b2c31;
+    --code-bg: #1b1c20;
+    --start: #4cc35a;
+    --goal: #b48cf0;
+    --success: #3fb950;
+    --success-tint: #16281b;
+    --fail: #f2665e;
+    --fail-tint: #2e1a1a;
+    --bar-fill: #6c727c;
+    --footer-bg: #0a0b0d;   /* a shade darker than the dark page */
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121316;
+  --band: #191a1e;
+  --card: #1f2024;
+  --ink: #e9e7e4;
+  --muted: #a4a8b0;
+  --line: #2f3137;
+  --accent: #e8726f;
+  --accent-hover: #f09592;
+  --on-accent: #1a0d0d;
+  --tint: #2c1c1d;
+  --best: #2b2c31;
+  --code-bg: #1b1c20;
+  --start: #4cc35a;
+  --goal: #b48cf0;
+  --success: #3fb950;
+  --success-tint: #16281b;
+  --fail: #f2665e;
+  --fail-tint: #2e1a1a;
+  --bar-fill: #6c727c;
+  --footer-bg: #0a0b0d;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+img, video { max-width: 100%; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent-hover); }
+sup, sub { line-height: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.skip-link { position: absolute; left: 16px; top: 8px; padding: 8px 14px; background: var(--card); color: var(--ink); border-radius: 6px; transform: translateY(-160%); z-index: 10; }
+.skip-link:focus { transform: none; }
+
+/* Page widths: text sections, the wide benchmark section, and reading-width blocks. */
+:root { --gutter: 32px; --w-page: 1280px; --w-wide: 1480px; --w-narrow: 1000px; }
+.container { width: min(var(--w-page), calc(100% - 2 * var(--gutter))); margin: 0 auto; }
+.container.wide { width: min(var(--w-wide), calc(100% - 2 * var(--gutter))); }
+.container.narrow, .narrow { max-width: var(--w-narrow); }
+.container.narrow { width: min(var(--w-narrow), calc(100% - 2 * var(--gutter))); }
+.lead.narrow { margin-left: auto; margin-right: auto; }
+
+/* KaTeX math (Computer Modern, as in the paper); scaled to sit with the Inter body text. */
+/* position: relative anchors KaTeX's visually hidden MathML copy (position: absolute) to the formula,
+   so formulas inside horizontally scrolling tables cannot widen the page. */
+.katex { font-size: 1.15em; position: relative; }
+.stat-label .katex, .stat-detail .katex, .stat-value .katex { font-size: 1.1em; }
+
+/* ---------- Hero ---------- */
+.hero { padding: 64px 0 44px; text-align: center; border-bottom: 1px solid var(--line); }
+/* Project name: title serif (Source Serif 4 Bold) in a crimson pill */
+.eyebrow {
+  display: inline-block; margin: 0 0 18px; padding: 4px 26px 6px; border-radius: 999px;
+  font: 700 clamp(26px, 4vw, 34px)/1.2 var(--serif); letter-spacing: .02em;
+  background: var(--accent); color: var(--on-accent);
+}
+.hero h1 {
+  margin: 0 auto 20px;
+  max-width: 1120px;
+  font: 600 clamp(28px, 4.2vw, 44px)/1.18 var(--serif);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.authors { margin: 0 0 4px; font-size: 18px; font-weight: 500; }
+.authors a { color: var(--ink); text-decoration: none; margin: 0 10px; }
+.authors a:hover { color: var(--accent); text-decoration: underline; }
+.affiliation { margin: 0 0 26px; color: var(--muted); font-size: 15px; }
+
+.resource-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.resource {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--ink);
+  font-weight: 500; font-size: 15px; text-decoration: none;
+  transition: border-color .15s, background-color .15s;
+}
+.resource svg { width: 18px; height: 18px; flex: none; }
+.resource:hover { border-color: var(--accent); color: var(--ink); }
+.resource.is-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.resource.is-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--on-accent); }
+.resource[aria-disabled="true"] { color: var(--muted); cursor: default; pointer-events: none; }
+.soon { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 1px 7px; border-radius: 999px; background: var(--band); color: var(--muted); }
+
+/* ---------- Sections ---------- */
+.section { padding: 56px 0; }
+.section.band { background: var(--band); }
+.section h2 { margin: 0 0 18px; font-size: 28px; line-height: 1.25; font-weight: 700; letter-spacing: -.01em; text-align: center; }
+.section h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.35; font-weight: 600; }
+#motivation p { margin: 0; font-size: 17px; line-height: 1.7; text-align: justify; hyphens: auto; }
+#motivation p + p { margin-top: 14px; }
+.lead { margin: 0 0 28px; color: var(--muted); text-align: center; }
+.footnote { margin: 22px auto 0; max-width: var(--w-narrow); color: var(--muted); font-size: 14px; text-align: center; }
+
+/* Map labels, typeset like \mapname{} (\texttt) in the paper */
+.map-tag { font-family: var(--mono); font-size: .92em; font-weight: 600; }
+
+/* ---------- Highlights ---------- */
+.stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr); }   /* the last tile has the longest text */
+.stat { display: flex; flex-direction: column; gap: 4px; padding: 20px 18px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.stat-value { font: 600 30px/1.15 var(--serif); color: var(--accent); font-variant-numeric: tabular-nums; }
+.stat-sep { color: var(--muted); font-weight: 400; }
+.stat-label { font-weight: 500; line-height: 1.4; }
+.stat-detail { color: var(--muted); font-size: 14px; }
+.nobr { white-space: nowrap; }   /* keep "RRT" and its superscript star on one line */
+/* Wording that depends on the layout, e.g. "upper-left" in the 2x2 clip grid but "first" once the clips stack (<= 640 px) */
+.narrow-only { display: none; }
+@media (max-width: 640px) { .wide-only { display: none; } .narrow-only { display: inline; } }
+
+/* ---------- Method ---------- */
+.overview { margin: 0 0 32px; }
+.overview a { display: block; }
+.overview img { display: block; width: 100%; height: auto; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
+.overview figcaption { margin-top: 12px; color: var(--muted); font-size: 14px; text-align: center; }
+.stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.stage { padding: 18px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.stage p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+.stage h3 { display: flex; align-items: center; gap: 10px; }
+.stage-num { flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--bg); font-size: 13px; font-weight: 700; }
+.stages.contributions { grid-template-columns: repeat(3, minmax(0, 1fr)); }   /* one row of three */
+.contributions .stage-num { background: var(--accent); }   /* contributions use the accent color, method stages stay dark */
+
+/* Justified body text (headings, labels and the footer stay as they are) */
+#motivation p, .lead, .footnote, .stage p, .overview figcaption, table caption,
+.stat-label, .stat-detail {
+  text-align: justify; -webkit-hyphens: auto; hyphens: auto;
+}
+
+/* Key idea of the method: the Key finding card in crimson (Method section, above Fig. 1) */
+.concept {
+  display: flex; gap: 14px; max-width: var(--w-narrow); margin: 0 auto 28px; padding: 16px 20px;
+  background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.concept > svg { flex: none; width: 26px; height: 26px; margin-top: 1px; color: var(--accent); }
+.concept p { margin: 0; font-size: 17px; line-height: 1.65; text-align: justify; -webkit-hyphens: auto; hyphens: auto; }
+.concept .concept-title { margin-bottom: 3px; font-size: 15px; font-weight: 600; color: var(--accent); text-align: left; }
+
+/* ---------- Environment tabs ---------- */
+.env-tabs[hidden], .player-bar[hidden], .env-panel[hidden], [data-copy][hidden] { display: none; }
+.env-tabs { display: flex; justify-content: center; gap: 12px; margin: 0 0 18px; }
+/* "Pick a map ..." line above the map tabs (shown by env-tabs.js together with the tabs) */
+.env-hint { display: flex; align-items: center; justify-content: center; gap: 8px; margin: -10px 0 16px;
+  color: var(--accent); font-size: 16px; font-weight: 600; text-align: center; }
+.env-hint[hidden] { display: none; }
+.env-hint svg { flex: none; width: 20px; height: 20px; }
+.env-hint svg:last-child { width: 18px; height: 18px; }
+.env-tabs button {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  width: 164px; padding: 8px 8px 10px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--card); color: var(--ink);
+  font: inherit; cursor: pointer;
+  transition: border-color .15s, background-color .15s, box-shadow .15s;
+}
+.env-tabs img { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 6px; border: 1px solid var(--line); margin-bottom: 6px; background: #fff; }
+.tab-label { font-family: var(--mono); font-weight: 600; font-size: 15px; line-height: 1.3; }
+.tab-name { font-size: 12.5px; line-height: 1.3; color: var(--muted); }
+.env-tabs button:hover:not([aria-selected="true"]) { border-color: var(--accent); }
+.env-tabs button[aria-selected="true"] { border-color: var(--accent); background: var(--tint); box-shadow: 0 0 0 1px var(--accent) inset; }
+.env-tabs button[aria-selected="true"] .tab-label { color: var(--accent); }
+
+.player-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 22px; margin: 0 0 22px; }
+.player-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--ink); font: 500 14px/1.2 var(--sans); cursor: pointer;
+}
+.pill svg { width: 12px; height: 12px; }
+.pill:hover { border-color: var(--accent); }
+.speed { display: inline-flex; align-items: center; gap: 4px; }
+.speed-label { margin-right: 6px; color: var(--muted); font-size: 14px; }
+.speed button {
+  min-width: 42px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); color: var(--ink); font: 600 13px/1.2 var(--sans); cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.speed button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.speed button:hover:not([aria-pressed="true"]) { border-color: var(--accent); }
+
+.env-panel + .env-panel { margin-top: 48px; }      /* only matters without JavaScript, when every panel shows */
+.env-meta { text-align: center; margin: 0 0 18px; }
+.env-meta h3 { font-size: 19px; margin-bottom: 2px; }
+.env-meta p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.env-meta .poses { margin-top: 2px; }
+/* Start/goal poses in the colors of their markers in the clips, each with the clip's robot icon
+   turned to the pose heading. */
+.pose { white-space: nowrap; }
+.pose + .pose { margin-left: 1.1em; }
+.robot { display: inline-block; width: 1.35em; height: 1.35em; margin-right: .3em; vertical-align: -.36em; }
+.pose-start { color: var(--start); }
+.pose-goal { color: var(--goal); }
+
+/* Key finding of each map: the text of the map's Key Finding box in the supplementary video */
+.key-finding {
+  display: flex; gap: 14px; max-width: var(--w-narrow); margin: 0 auto 22px; padding: 14px 18px;
+  background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--success); border-radius: var(--radius);
+}
+.key-finding > svg { flex: none; width: 26px; height: 26px; margin-top: 1px; color: var(--success); }
+.key-finding p { margin: 0; font-size: 16px; line-height: 1.6; text-align: justify; -webkit-hyphens: auto; hyphens: auto; }
+.key-finding .key-finding-title { margin-bottom: 2px; font-size: 15px; font-weight: 600; color: var(--success); text-align: left; }
+.key-finding-title span { font-weight: 400; color: var(--muted); }
+.key-finding em { font-style: normal; font-weight: 600; color: var(--accent); }
+.video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 1240px; margin: 0 auto; }
+.clip {
+  margin: 0; min-width: 0; padding: 10px 10px 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  transition: box-shadow .3s;
+}
+/* Clip played to the end (robot at the goal): green frame outside the card. Ours is marked only by its red label. */
+.clip.is-done { box-shadow: 0 0 0 3px var(--success); }
+.clip video { display: block; width: 100%; height: auto; aspect-ratio: 1304 / 1274; border-radius: 6px; background: #fff; }
+/* End zoom (static/js/clip-zoom.js): a sharp still of the last frame zooms into the clip's path */
+.clip-media { position: relative; overflow: hidden; border-radius: 6px; }
+.zoom-still {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: none; background: #fff;
+  transform-origin: 0 0; transition: transform 1.5s ease-in-out; cursor: zoom-out;
+}
+.clip-media.has-still .zoom-still { display: block; }
+.clip-media.is-zoomed .zoom-still { transform: scale(var(--z)) translate(calc(var(--zx) * -100%), calc(var(--zy) * -100%)); }
+.zoom-badge {
+  position: absolute; top: 10px; left: 10px; padding: 2px 9px; border-radius: 999px;
+  background: rgba(29, 31, 35, .78); color: #fff; font-size: 12.5px; font-weight: 600;
+  opacity: 0; transition: opacity .4s; pointer-events: none;
+}
+.clip-media.is-zoomed .zoom-badge { opacity: 1; transition-delay: 1.1s; }
+.zoom-toggle {
+  position: absolute; top: 10px; right: 10px; padding: 3px 11px; border: 1px solid #d5d0c8; border-radius: 999px;
+  background: rgba(255, 255, 255, .92); color: #1d1f23; font: 600 12.5px var(--sans); cursor: pointer;
+}
+.zoom-toggle:hover { background: #fff; }
+.zoom-toggle[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .zoom-still, .zoom-badge { transition: none; } }
+.clip figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin-top: 10px; padding: 0 4px; }
+.clip .method { font-weight: 600; font-size: 16px; }
+.clip.is-ours .method { color: var(--accent); }
+.clip .metric { margin-left: auto; font-size: 15px; white-space: nowrap; }
+.reached {
+  display: none; align-items: center; gap: 4px; align-self: center;
+  padding: 1px 8px 1px 6px; border-radius: 999px;
+  background: var(--success-tint); color: var(--success); font-size: 12.5px; font-weight: 600; line-height: 1.5;
+}
+.reached svg { width: 12px; height: 12px; }
+.clip.is-done .reached { display: inline-flex; }
+.clip .metric-name { color: var(--muted); margin-right: 4px; }
+/* Tree size: number and a bar relative to the largest tree among the clips shown together */
+.treebar { flex-basis: 100%; display: grid; grid-template-columns: auto auto minmax(40px, 1fr); align-items: center; gap: 0 10px; margin-top: 4px; font-size: 15px; }
+.treebar .metric-name { margin-right: 0; }
+.bar { height: 8px; border-radius: 4px; background: var(--band); border: 1px solid var(--line); overflow: hidden; }
+.bar .fill { display: block; height: 100%; background: var(--bar-fill); }
+.bar .fill.ours { background: var(--accent); }
+.clip-note { color: var(--muted); font-size: 14.5px; }
+/* Run that ends without reaching the goal: red frame and "Goal not reached" badge. */
+.clip.is-failed.is-done { box-shadow: 0 0 0 3px var(--fail); }
+.not-reached { background: var(--fail-tint); color: var(--fail); }
+
+/* ---------- Tables ---------- */
+.table-wrap { position: relative; max-width: 1240px; margin: 26px auto 0; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+/* Tables follow Table I of the paper: Times for words, Computer Modern (KaTeX) for numbers and
+   symbols, both at the same size, regular weight, gray best cells and a double rule under the header. */
+table { width: 100%; border-collapse: collapse; font: 16px/1.5 var(--times); }
+table .katex { font-size: 1em; }
+table .map-tag { font-family: "Courier New", Courier, "Nimbus Mono PS", "Nimbus Mono L", monospace; font-size: 1em; font-weight: 400; }  /* \texttt in IEEEtran */
+caption { caption-side: top; padding: 12px 14px 4px; text-align: left; color: var(--muted); font-size: 15px; }
+th, td { padding: 8px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-weight: 400; }
+thead th { white-space: nowrap; border-bottom: 3px double var(--line); }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+.results-table td { white-space: nowrap; }
+.results-table tbody th { white-space: nowrap; }
+.results-table td.is-best { background: var(--best); }
+.results-table tr.is-ours th { color: var(--accent); }
+/* Title of each per-map table: crimson with a table icon, like the Key finding / Key idea cards */
+.results-table caption { padding: 14px 16px 8px; }
+.table-title { display: flex; align-items: center; gap: 8px; font: 600 16.5px/1.4 var(--sans); color: var(--accent); text-align: left; }
+.table-title svg { flex: none; width: 22px; height: 22px; }
+.results-table .table-title .map-tag { font-family: var(--mono); font-weight: 600; font-size: .92em; }
+.table-note { display: block; margin-top: 3px; font: 14px/1.5 var(--sans); color: var(--muted); }
+
+/* ---------- BibTeX ---------- */
+.bibtex-head { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 18px; }
+.bibtex-head h2 { margin: 0; }
+.bibtex { margin: 0; padding: 18px 20px; overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--radius); font: 13.5px/1.6 var(--mono); }
+
+/* ---------- Footer ---------- */
+.site-footer { padding: 26px 0; background: var(--footer-bg); color: var(--footer-muted); font-size: 13px; }
+/* Project name and copyright on the left; Contact, GitHub and Lab Website on the right (stacked and centered on phones) */
+.footer-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px 32px; }
+.footer-brand { display: flex; flex-direction: column; gap: 2px; }
+.footer-name { font: 700 18px/1.2 var(--serif); color: var(--footer-accent); }
+.footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; }
+.footer-links a { display: inline-flex; align-items: center; gap: 7px; color: var(--footer-ink); font-size: 15px; font-weight: 500; text-decoration: none; }
+.footer-links a:hover { color: var(--footer-accent-hover); }
+.footer-links svg { flex: none; width: 18px; height: 18px; }
+@media (max-width: 640px) {
+  .footer-row { flex-direction: column; text-align: center; }
+  .footer-brand { align-items: center; }
+  .footer-links { justify-content: center; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .stats, .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stages.contributions { grid-template-columns: 1fr; }   /* three boxes stack instead of leaving one alone on a second row */
+}
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
+  .hero { padding: 40px 0 32px; }
+  .section { padding: 40px 0; }
+  .section h2 { font-size: 24px; }
+  .stats, .stages { grid-template-columns: 1fr; }
+  .env-tabs { gap: 6px; }
+  .env-tabs button { flex: 1 1 0; min-width: 0; width: auto; padding: 5px 5px 7px; }
+  .tab-label { font-size: 13px; }
+  .tab-name { display: none; }
+  .video-grid { grid-template-columns: 1fr; gap: 16px; }
+  /* Key idea: icon beside the title, so the justified text gets the full width */
+  .concept { display: block; padding: 14px 16px; }
+  .concept > svg { float: left; width: 22px; height: 22px; margin: 0 8px 0 0; }
+  .concept p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+/* ---------- Results at a glance (end of Benchmark Comparisons): one card, the four stats in a strip ---------- */
+.glance { max-width: 1240px; margin: 36px auto 0; padding: 18px 22px 20px; background: var(--card);
+  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.glance-head { display: flex; align-items: center; justify-content: space-between; gap: 6px 24px;
+  margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.glance-head h3 { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 20px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.glance-head h3 svg { flex: none; width: 24px; height: 24px; }
+.glance-head p { margin: 0; color: var(--muted); font-size: 13.5px; text-align: right; }
+.glance .stats { gap: 0; }
+.glance .stat { padding: 4px 22px; background: none; border: 0; border-left: 1px solid var(--line); border-radius: 0; }
+.glance .stat:first-child { padding-left: 4px; border-left: 0; }
+@media (max-width: 900px) {   /* two columns: dividers between the columns and between the rows */
+  .glance-head { flex-direction: column; align-items: flex-start; }
+  .glance-head p { text-align: left; }
+  .glance .stat { padding: 14px 18px; }
+  .glance .stat:nth-child(odd) { padding-left: 4px; border-left: 0; }
+  .glance .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 640px) {   /* one column */
+  .glance { padding: 16px; }
+  .glance .stat, .glance .stat:nth-child(odd) { padding: 14px 0; border-left: 0; }
+  .glance .stat:nth-child(n+2) { border-top: 1px solid var(--line); }
+}
